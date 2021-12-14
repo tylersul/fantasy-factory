@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Home</title>
+  </head>
+  <body>
+    <form action="/managers/<%=manager._id%>?_method=PUT" method="POST">
+      <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="manager[name]" value="<%=manager.name%>">
+      </div>
+      <div>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="manager[description]" value="<%=manager.description%>">
+      </div>
+      <div>
+        <label for="wins">Wins</label>
+        <input type="text" id="wins" name="manager[wins]" value="<%=manager.wins%>">
+      </div>
+      <div>
+        <label for="losses">Losses</label>
+        <input type="text" id="losses" name="manager[losses]" value="<%=manager.losses%>">
+      </div>
+      <button>Update Manager</button>
+    </form>
+    <a href="/managers">Back to All Managers -></a>
+  </body>
+</html>

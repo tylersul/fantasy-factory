@@ -7,5 +7,15 @@
   </head>
   <body>
     <h1><%= manager.name %></h1>
+    <h2><%= manager.description %></h2>
+    <footer>
+      <p>
+        <a href="/managers/<%= manager._id%>/edit">Edit</a>
+      </p>
+      <form action="/managers/<%= manager._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+      </form>
+      <a href="/managers">All Managers -></a>
+    </footer>
   </body>
 </html>

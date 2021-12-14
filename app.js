@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const Manager = require('./models/manager');
 
 mongoose.connect('mongodb://127.0.0.1/fantasy-factory', {
@@ -20,6 +21,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Req.body info exercise 412
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
   res.render('home')
@@ -46,6 +48,24 @@ app.get('/managers/:id', async (req, res) => {
 
 });
 
+app.put('/managers/:id', async (req, res) => {
+  const { id } = req.params;
+  const manager = await Manager.findByIdAndUpdate(id, { ...req.body.manager });
+  res.redirect(`/managers/${manager._id}`)
+});
+
+app.get('/managers/:id/edit', async (req,res) => {
+  const manager = await Manager.findById(req.params.id);
+  res.render('managers/edit', { manager })
+});
+
+app.delete('/managers/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+  console.log(id);
+  await Manager.findByIdAndDelete(id);
+  res.redirect('/managers');
+})
 
 app.listen(3000, () => {
   console.log('Serving on port 3000');
