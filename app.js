@@ -18,6 +18,8 @@ db.once("open", () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Req.body info exercise 412
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   res.render('home')
@@ -28,9 +30,15 @@ app.get('/managers', async (req, res) => {
   res.render("managers/index", { managers });
 });
 
-app.get('managers/new', (req, res) => {
+app.get('/managers/new', (req, res) => {
   res.render('managers/new');
 });
+
+app.post('/managers', async (req, res) => {
+  const manager = new Manager(req.body.manager);
+  await manager.save();
+  res.redirect(`/managers/${manager._id}`);
+})
 
 app.get('/managers/:id', async (req, res) => {
   const manager = await Manager.findById(req.params.id);
