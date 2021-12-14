@@ -28,11 +28,17 @@ app.get('/managers', async (req, res) => {
   res.render("managers/index", { managers });
 });
 
+app.get('managers/new', (req, res) => {
+  res.render('managers/new');
+});
+
 app.get('/managers/:id', async (req, res) => {
   const manager = await Manager.findById(req.params.id);
   res.render('managers/show', { manager });
 
-})
+});
+
+
 app.listen(3000, () => {
   console.log('Serving on port 3000');
 });
