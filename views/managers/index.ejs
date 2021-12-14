@@ -7,6 +7,9 @@
   </head>
   <body>
     <h1>Managers</h1>
+    <div>
+      <a href="/managers/new">New Manager</a>
+    </div>
     <ul>
       <% for (let manager of managers) {%>
         <li><a href="/managers/<%= manager._id%>"><%=manager.name%></a></li>
