@@ -2,22 +2,34 @@
 <div class="row">
   <h1>Edit Manager</h1>
   <div class="col-6 offset-3">
-    <form action="/managers/<%=manager._id%>?_method=PUT" method="POST">
+    <form action="/managers/<%=manager._id%>?_method=PUT" method="POST" novalidate class="validated-form">
       <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
-        <input class="form-control" type="text" id="title" name="manager[name]" value="<%=manager.name%>">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-control" type="text" id="name" name="manager[name]" value="<%=manager.name%>" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">Description</label>
-        <textarea class="form-control" type="text" id="description" name="manager[description]"><%= manager.description %></textarea>
+        <textarea class="form-control" type="text" id="description" name="manager[description]" required><%= manager.description %></textarea>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="wins">Wins</label>
-        <input class="form-control" type="text" id="wins" name="manager[wins]" value="<%=manager.wins%>">
+        <input class="form-control" type="text" id="wins" name="manager[wins]" value="<%=manager.wins%>" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="losses">Losses</label>
-        <input class="form-control" type="text" id="losses" name="manager[losses]" value="<%=manager.losses%>">
+        <input class="form-control" type="text" id="losses" name="manager[losses]" value="<%=manager.losses%>" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <button class="btn btn-success">Update Manager</button>

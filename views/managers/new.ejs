@@ -2,22 +2,34 @@
 <div class="row">
   <h1 class="text-center">New Manager</h1>
   <div class="col-6 offset-3">
-    <form action="/managers" method="POST">
+    <form action="/managers" method="POST" novalidate class="validated-form">
       <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
-        <input class="form-control" type="text" id="title" name="manager[name]">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-control" type="text" id="name" name="manager[name]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div class="mb-3">
       <div>
         <label class="form-label" for="description">Description</label>
-        <input class="form-control" type="text" id="description" name="manager[description]">
+        <input class="form-control" type="text" id="description" name="manager[description]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="wins">Wins</label>
-        <input class="form-control" type="text" id="wins" name="manager[wins]">
+        <input class="form-control" type="text" id="wins" name="manager[wins]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="losses">Losses</label>
-        <input class="form-control" type="text" id="losses" name="manager[losses]">
+        <input class="form-control" type="text" id="losses" name="manager[losses]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <button class="btn btn-success">Add Manager</button>
@@ -28,3 +40,4 @@
     </form>
   </div>
 </div>
+
