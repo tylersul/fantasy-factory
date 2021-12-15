@@ -1,13 +1,26 @@
 <% layout('layouts/boilerplate') %>
-<h1><%= manager.name %></h1>
-<h2><%= manager.description %></h2>
-<img src="<%= manager.image %>" alt="Manager photo.">
-<footer>
-  <p>
-    <a href="/managers/<%= manager._id%>/edit">Edit</a>
-  </p>
-  <form action="/managers/<%= manager._id %>?_method=DELETE" method="POST">
-    <button>Delete</button>
-  </form>
-  <a href="/managers">All Managers -></a>
-</footer>
+
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3">
+      <img src="<%= manager.image %>" class="card-img-top" alt="Manager photo.">
+      <div class="card-body">
+        <h5 class="card-title"><%= manager.name %></h5>
+        <p class="card-text"><%= manager.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted">Location</li>
+        <li class="list-group-item">Overall Regular Season Record: <%= manager.wins %> - <%= manager.losses %></li>
+        <li class="list-group-item">A third item</li>
+      </ul>
+      <div class="card-body">
+        <a href="/managers/<%= manager._id%>/edit" class="card-link btn btn-warning">Edit</a>
+        <a href="/managers/<%= manager._id %>?_method=DELETE" class="card-link btn btn-danger">Delete</a>
+      </div>
+      <div class="card-footer text-muted">
+        2 days ago
+      </div>
+    </div>
+  </div>
+</div>
