@@ -69,6 +69,6 @@ app.delete('/managers/:id', async (req, res) => {
   res.redirect('/managers');
 })
 
-app.listen(3000, () => {
-  console.log('Serving on port 3000');
+app.listen(3001, () => {
+  console.log('Serving on port 3001');
 });
