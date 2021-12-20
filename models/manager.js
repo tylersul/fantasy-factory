@@ -6,7 +6,13 @@ const ManagerSchema = new Schema({
   image: String,
   description: String,
   wins: Number,
-  losses: Number
+  losses: Number,
+  seasons: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Season'
+    }
+  ]
 });
 
 module.exports = mongoose.model('Manager', ManagerSchema);
