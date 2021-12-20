@@ -1,13 +1,15 @@
 // Imports
-const express        = require('express'),
-      app            = express(),
-      path           = require('path'),
-      mongoose       = require('mongoose'),
-      catchAsync     = require('./utils/catchAsync'),
-      ExpressError   = require('./utils/ExpressError'),
-      ejsMate        = require('ejs-mate'),
-      methodOverride = require('method-override'),
-      Manager        = require('./models/manager');
+const express              = require('express'),
+      app                  = express(),
+      path                 = require('path'),
+      mongoose             = require('mongoose'),
+      catchAsync           = require('./utils/catchAsync'),
+      ExpressError         = require('./utils/ExpressError'),
+      ejsMate              = require('ejs-mate'),
+      Joi                  = require('joi'),
+      { managerJoiSchema } = require('./utils/schemaValidation'),
+      methodOverride       = require('method-override'),
+      Manager              = require('./models/manager');
 
 // Local DB connections
 mongoose.connect('mongodb://127.0.0.1/fantasy-factory', {
@@ -33,6 +35,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
+// Joi validation middleware
+const validateManager = (req, res, next) => {
+  let { error } = managerJoiSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map(el => el.message).join(',')
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
 // GET / - Root Route
 app.get('/', (req, res) => {
   res.render('home')
@@ -50,9 +63,10 @@ app.get('/managers/new', (req, res) => {
 });
 
 // POST /managers - Create new manager
-app.post('/managers', catchAsync(async (req, res) => {
+app.post('/managers', validateManager, catchAsync(async (req, res) => {
   // Stops API calls from posting new managers without correct data
-  if (!req.body.campground) throw new ExpressError('Invalid manager data', 400);
+  // if (!req.body.campground) throw new ExpressError('Invalid manager data', 400);
+
   const manager = new Manager(req.body.manager);
   await manager.save();
   res.redirect(`/managers/${manager._id}`);
@@ -65,7 +79,7 @@ app.get('/managers/:id', catchAsync(async (req, res) => {
 }));
 
 // PUT /managers/:id - Update specific manager
-app.put('/managers/:id', catchAsync(async (req, res) => {
+app.put('/managers/:id', validateManager, catchAsync(async (req, res) => {
   const { id } = req.params;
   const manager = await Manager.findByIdAndUpdate(id, { ...req.body.manager });
   res.redirect(`/managers/${manager._id}`)
