@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+  <h1 class="text-center">New Season</h1>
+  <div class="col-6 offset-3">
+    <form action="/seasons" method="POST" novalidate class="validated-form">
+      <div class="mb-3">
+        <label class="form-label" for="year">Year</label>
+        <input class="form-control" type="text" id="year" name="season[year]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div class="mb-3">
+      <div>
+        <label class="form-label" for="description">Description</label>
+        <input class="form-control" type="text" id="description" name="season[description]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="champion">Champion</label>
+        <input class="form-control" type="text" id="champion" name="season[champion]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="loser">Loser</label>
+        <input class="form-control" type="text" id="loser" name="season[loser]" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-success">Add Season</button>
+      </div>
+      <div>
+        <a href="/seasons">Back to All Seasons -></a>
+      </div>
+    </form>
+  </div>
+</div>
+
