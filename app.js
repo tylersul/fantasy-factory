@@ -38,6 +38,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
+// Express.Static middleware function that serves static files in Express
+// Adding dynamic directory name and public for CSS stylesheets and images
+// Serves all files inside of 'public' directory to '/' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(managers);
 app.use(reviews);
 
