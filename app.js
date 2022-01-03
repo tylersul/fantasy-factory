@@ -6,6 +6,7 @@ const express              = require('express'),
       catchAsync           = require('./utils/catchAsync'),
       ExpressError         = require('./utils/ExpressError'),
       ejsMate              = require('ejs-mate'),
+      session              = require('express-session'),
       Joi                  = require('joi'),
       { managerJoiSchema, seasonJoiSchema } = require('./utils/schemaValidation'),
       methodOverride       = require('method-override'),
@@ -42,6 +43,20 @@ app.use(methodOverride('_method'));
 // Adding dynamic directory name and public for CSS stylesheets and images
 // Serves all files inside of 'public' directory to '/' directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// View session cookies in Chrome under application tab
+const sessionConfig = {
+  secret: 'temporarysecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 360,
+    maxAge: 1000 * 360
+  }
+}
+
+app.use(session(sessionConfig));
 
 app.use(managers);
 app.use(reviews);
