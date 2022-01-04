@@ -9,10 +9,14 @@ const express              = require('express'),
       ejsMate              = require('ejs-mate'),
       session              = require('express-session'),
       Joi                  = require('joi'),
+      passport             = require('passport'),
+      LocalStrategy        = require('passport-local'),
       { managerJoiSchema, seasonJoiSchema } = require('./utils/schemaValidation'),
+      User                 = require('./models/user'),
       methodOverride       = require('method-override'),
       Season               = require('./models/season');
 
+const { UserExistsError } = require('passport-local-mongoose/lib/errors');
 const managers = require('./routes/managers');
 const reviews = require('./routes/seasons');
 
@@ -61,6 +65,17 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// // Use local strategy with authentication method on user model
+passport.use(new LocalStrategy(User.authenticate()));
+
+
+// Store user in session
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Gives access on every request under the key 'success'
 app.use((req, res, next) => {
