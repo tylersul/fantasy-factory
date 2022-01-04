@@ -5,6 +5,7 @@ const express              = require('express'),
       mongoose             = require('mongoose'),
       catchAsync           = require('./utils/catchAsync'),
       ExpressError         = require('./utils/ExpressError'),
+      flash                = require('connect-flash')
       ejsMate              = require('ejs-mate'),
       session              = require('express-session'),
       Joi                  = require('joi'),
@@ -44,7 +45,8 @@ app.use(methodOverride('_method'));
 // Serves all files inside of 'public' directory to '/' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// View session cookies in Chrome under application tab
+// View session cookies in Chrome under application tab (name = connect.sid)
+// Inside of any request body, there will now be a cookie object available
 const sessionConfig = {
   secret: 'temporarysecret',
   resave: false,
@@ -58,6 +60,16 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
+app.use(flash());
+
+// Gives access on every request under the key 'success'
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+})
+
+// Route files
 app.use(managers);
 app.use(reviews);
 

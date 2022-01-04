@@ -32,6 +32,7 @@ router.post('/seasons', validateSeason, catchAsync(async (req, res) => {
 
   const season = new Season(req.body.season);
   await season.save();
+  req.flash('success', 'Successfully made new season.');
   // res.redirect(`/seasons/${season._id}`);
   res.redirect('/seasons')
 }));
@@ -41,7 +42,6 @@ router.get('/seasons/:id', catchAsync(async (req, res) => {
   const season = await Season.findById(req.params.id);
   res.render('seasons/show', { season });
 }));
-
 
 
 // GET /seasons/:id/edit - Get update season form

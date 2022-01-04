@@ -37,12 +37,17 @@ router.post('/managers', validateManager, catchAsync(async (req, res) => {
 
   const manager = new Manager(req.body.manager);
   await manager.save();
+  req.flash('success', 'Successfully created new manager.');
   res.redirect(`/managers/${manager._id}`);
 }));
 
 // GET /managers/:id - View specific manager
 router.get('/managers/:id', catchAsync(async (req, res) => {
   const manager = await Manager.findById(req.params.id);
+  if (!manager) {
+    req.flash('error', 'Manager not found.');
+    return res.redirect('/managers');
+  }
   res.render('managers/show', { manager });
 }));
 
@@ -51,13 +56,21 @@ router.put('/managers/:id', validateManager, catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log(id)
   const manager = await Manager.findByIdAndUpdate(id, { ...req.body.manager });
+  req.flash('success', 'Successfully updated manager.');
   res.redirect(`/managers/${manager._id}`)
 })); 
 
 // GET /managers/:id/edit - Get update manager form
 router.get('/managers/:id/edit', catchAsync(async (req,res) => {
-  console.log(req.params)
+  console.log(req.params);
+
   const manager = await Manager.findById(req.params.id);
+
+  if (!manager) {
+    req.flash('error', 'Manager not found.');
+    return res.redirect('/managers');
+  }
+
   res.render('managers/edit', { manager })
 }));
 
@@ -76,6 +89,7 @@ router.delete('/managers/:id', catchAsync(async (req, res) => {
   console.log(req.params);
   console.log(id);
   await Manager.findByIdAndDelete(id);
+  req.flash('success', 'Successfully deleted manager.');
   res.redirect('/managers');
 }));
 
