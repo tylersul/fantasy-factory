@@ -17,9 +17,9 @@ const express              = require('express'),
       Season               = require('./models/season');
 
 const { UserExistsError } = require('passport-local-mongoose/lib/errors');
-const managers = require('./routes/managers');
-const reviews = require('./routes/seasons');
-
+const managerRoutes = require('./routes/managers');
+const reviewRoutes = require('./routes/seasons');
+const userRoutes = require('./routes/users');
 // Local DB connections
 mongoose.connect('mongodb://127.0.0.1/fantasy-factory', {
   useNewUrlParser: true,
@@ -81,12 +81,14 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
+  res.locals.currentUser = req.user;
   next();
 })
 
 // Route files
-app.use(managers);
-app.use(reviews);
+app.use(managerRoutes);
+app.use(reviewRoutes);
+app.use(userRoutes);
 
 // GET / - Root Route
 app.get('/', (req, res) => {
