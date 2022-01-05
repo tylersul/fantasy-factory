@@ -11,15 +11,18 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted">Location</li>
+        <li class="list-group-item text-muted">Created By: <%= manager.author.username %></li>
         <li class="list-group-item">Overall Regular Season Record: <%= manager.wins %> - <%= manager.losses %></li>
         <li class="list-group-item">A third item</li>
       </ul>
+      <% if (currentUser && manager.author.equals(currentUser._id)) { %>
       <div class="card-body">
         <a href="/managers/<%= manager._id%>/edit" class="card-link btn btn-warning">Edit</a>
         <form class="d-inline" action="/managers/<%= manager._id %>?_method=DELETE" method="POST">
           <button class="btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
       <div class="card-footer text-muted">
         2 days ago
       </div>
