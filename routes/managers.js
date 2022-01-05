@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync           = require('../utils/catchAsync');
 const ExpressError         = require('../utils/ExpressError');
+const { isLoggedIn }       = require('../utils/middleware');
 const { managerJoiSchema, seasonJoiSchema } = require('../utils/schemaValidation')
 const Manager              = require('../models/manager');
 
@@ -26,7 +27,7 @@ router.get('/managers', catchAsync(async (req, res) => {
 }));
 
 // GET /managers/new - Get create new manager form
-router.get('/managers/new', (req, res) => {
+router.get('/managers/new', isLoggedIn, (req, res) => {
   res.render('managers/new');
 });
 
