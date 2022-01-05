@@ -2,17 +2,8 @@ const express = require('express');
 const router = express.Router();
 const catchAsync           = require('../utils/catchAsync');
 const ExpressError         = require('../utils/ExpressError');
-const { managerJoiSchema, seasonJoiSchema } = require('../utils/schemaValidation')
+const { validateSeason }   = require('../utils/middleware');
 
-const validateSeason = (req, res, next) => {
-  let { error } = seasonJoiSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-}
 
 // GET /seasons - view all seasons
 router.get('/seasons', catchAsync( async(req, res) => {

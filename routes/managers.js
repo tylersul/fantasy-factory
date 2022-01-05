@@ -2,20 +2,8 @@ const express = require('express');
 const router = express.Router();
 const catchAsync           = require('../utils/catchAsync');
 const ExpressError         = require('../utils/ExpressError');
-const { isLoggedIn }       = require('../utils/middleware');
-const { managerJoiSchema, seasonJoiSchema } = require('../utils/schemaValidation')
+const { isLoggedIn, isAuthor, validateManager }       = require('../utils/middleware');
 const Manager              = require('../models/manager');
-
-// Joi validation middleware
-const validateManager = (req, res, next) => {
-  let { error } = managerJoiSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-}
 
 // ================================================================== //
 // ====================== Routes ==================================== //
@@ -37,6 +25,7 @@ router.post('/managers', validateManager, catchAsync(async (req, res) => {
   // if (!req.body.campground) throw new ExpressError('Invalid manager data', 400);
 
   const manager = new Manager(req.body.manager);
+  manager.author = req.user._id;
   await manager.save();
   req.flash('success', 'Successfully created new manager.');
   res.redirect(`/managers/${manager._id}`);
@@ -44,7 +33,7 @@ router.post('/managers', validateManager, catchAsync(async (req, res) => {
 
 // GET /managers/:id - View specific manager
 router.get('/managers/:id', catchAsync(async (req, res) => {
-  const manager = await Manager.findById(req.params.id);
+  const manager = await Manager.findById(req.params.id).populate('author');
   if (!manager) {
     req.flash('error', 'Manager not found.');
     return res.redirect('/managers');
@@ -53,7 +42,7 @@ router.get('/managers/:id', catchAsync(async (req, res) => {
 }));
 
 // PUT /managers/:id - Update specific manager
-router.put('/managers/:id', validateManager, catchAsync(async (req, res) => {
+router.put('/managers/:id', isLoggedIn, validateManager, catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log(id)
   const manager = await Manager.findByIdAndUpdate(id, { ...req.body.manager });
@@ -62,8 +51,7 @@ router.put('/managers/:id', validateManager, catchAsync(async (req, res) => {
 })); 
 
 // GET /managers/:id/edit - Get update manager form
-router.get('/managers/:id/edit', catchAsync(async (req,res) => {
-  console.log(req.params);
+router.get('/managers/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req,res) => {
 
   const manager = await Manager.findById(req.params.id);
 
@@ -76,7 +64,7 @@ router.get('/managers/:id/edit', catchAsync(async (req,res) => {
 }));
 
 // PUT /seasons/:id - Update specific season
-router.put('/managers/:id', catchAsync(async (req, res) => {
+router.put('/managers/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log(id)
   const season = await Season.findByIdAndUpdate(id, { ...req.body.season });
@@ -85,7 +73,7 @@ router.put('/managers/:id', catchAsync(async (req, res) => {
 }));
 
 // DELETE /managers/:id - Delete specific manager
-router.delete('/managers/:id', catchAsync(async (req, res) => {
+router.delete('/managers/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log(req.params);
   console.log(id);
