@@ -7,6 +7,10 @@ const ManagerSchema = new Schema({
   description: String,
   wins: Number,
   losses: Number,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   seasons: [
     {
       type: Schema.Types.ObjectId,
