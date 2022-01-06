@@ -3,8 +3,26 @@
 
 <div class="row">
   <div class="col-6 offset-3">
+    <div id="managerPicCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <% manager.images.forEach((img, i) => { %>
+        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+          <img class="d-block w-100" src="<%= img.url %>" alt="...">
+        </div>
+        <% }) %>
+      </div>
+      <% if (manager.images.length > 1) { %>
+      <a class="carousel-control-prev" href="#managerPicCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+      </a>
+      <a class="carousel-control-next" href="#managerPicCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+      </a>
+      <% } %>
+    </div>
     <div class="card mb-3">
-      <img src="<%= manager.image %>" class="card-img-top" alt="Manager photo.">
       <div class="card-body">
         <h5 class="card-title"><%= manager.name %></h5>
         <p class="card-text"><%= manager.description %></p>

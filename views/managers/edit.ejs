@@ -2,13 +2,17 @@
 <div class="row">
   <h1>Edit Manager</h1>
   <div class="col-6 offset-3">
-    <form action="/managers/<%=manager._id%>?_method=PUT" method="POST" novalidate class="validated-form">
+    <form action="/managers/<%=manager._id%>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
       <div class="mb-3">
         <label class="form-label" for="name">Name</label>
         <input class="form-control" type="text" id="name" name="manager[name]" value="<%=manager.name%>" required>
         <div class="valid-feedback">
           Looks good!
         </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="image">Images</label>
+        <input type="file" name="image" id="image" multiple>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">Description</label>
