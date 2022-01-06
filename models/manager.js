@@ -3,7 +3,12 @@ const Schema = mongoose.Schema;
 
 const ManagerSchema = new Schema({
   name: String,
-  image: String,
+  images: [
+    {
+      url: String,
+      filename: String
+    }
+  ],
   description: String,
   wins: Number,
   losses: Number,
